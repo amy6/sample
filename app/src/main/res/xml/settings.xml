@@ -3,6 +3,7 @@
 
     <ListPreference
         android:title="Price range"
+        android:key="@string/settings_price_key"
         android:entries="@array/settings_price_labels"
         android:entryValues="@array/settings_price_values"
         android:defaultValue="@string/settings_price_default"
