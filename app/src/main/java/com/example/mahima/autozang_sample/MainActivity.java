@@ -2,11 +2,16 @@ package com.example.mahima.autozang_sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +36,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         callButton.setOnClickListener(this);
         detectLocation.setOnClickListener(this);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        CustomRecyclerViewAdapter adapter = new CustomRecyclerViewAdapter(this, setUpDummyData());
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -44,5 +54,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
         }
+    }
+
+    private ArrayList<Service> setUpDummyData () {
+
+        String imgUrl = "https://assets.vccircle.com/uploads/2017/09/car-1751750_1280.jpg";
+        String name = "RajLakshmi Service Center";
+        String location = "Tambaram, Chennai";
+        String distance = "2.5km away";
+        float rating = 4.3f;
+        int reviewCount = 64;
+        String days = "Monday to Saturday";
+        String timings = "9am to 9pm";
+        String chargeType = "Basic Standard Service Charge";
+        double price = 500;
+        String serviceType = "Pick and Drop Available";
+
+        ArrayList<Service> serviceList = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            Service service = new Service(imgUrl, name, location, distance, rating, reviewCount, days, timings, chargeType, price, serviceType);
+            serviceList.add(service);
+        }
+        return serviceList;
     }
 }
