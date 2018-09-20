@@ -10,13 +10,13 @@
         android:id="@+id/image"
         android:layout_width="160dp"
         android:layout_height="140dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
         android:src="@drawable/car_service"
         app:layout_constraintBottom_toBottomOf="@+id/serviceType"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ratingBar"
+        app:layout_constraintTop_toBottomOf="@+id/location"
+        app:layout_constraintVertical_bias="1.0"
         tools:src="@tools:sample/avatars" />
 
     <TextView
@@ -40,10 +40,12 @@
         android:drawableStart="@drawable/ic_location_on"
         android:text="Tambaram, Chennai"
         android:textAppearance="?android:textAppearanceSmall"
+        app:layout_constraintBottom_toTopOf="@+id/ratingBar"
         app:layout_constraintEnd_toStartOf="@+id/distance"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/distance"
