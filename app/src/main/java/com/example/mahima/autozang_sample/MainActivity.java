@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button callButton;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
     private ArrayList<Service> serviceList;
     private CustomRecyclerViewAdapter adapter;
 
@@ -43,6 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left);
+        }
 
         serviceList = new ArrayList<>();
         setUpDummyData();
@@ -123,17 +130,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case 500:
                 setUpDummyData();
-                for (int i = serviceList.size()-1; i > 0; i--) {
-                    if (serviceList.get(i).getPrice() > 500) {
-                        serviceList.remove(i);
+                Iterator<Service> iterator = serviceList.iterator();
+                while (iterator.hasNext()) {
+                    if (iterator.next().getPrice() > 500) {
+                        iterator.remove();
                     }
                 }
                 break;
             case 1000:
                 setUpDummyData();
-                for (int i = serviceList.size()-1; i > 0; i--) {
-                    if (serviceList.get(i).getPrice() > 1000) {
-                        serviceList.remove(i);
+                iterator = serviceList.iterator();
+                while (iterator.hasNext()) {
+                    if (iterator.next().getPrice() <= 500) {
+                        iterator.remove();
+                    }
+                }
+                iterator = serviceList.iterator();
+                while (iterator.hasNext()) {
+                    if (iterator.next().getPrice() > 1000) {
+                        iterator.remove();
                     }
                 }
                 break;
