@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="settings_price_labels">
+        <item>@string/price_any_label</item>
+        <item>@string/price_min_label</item>
+        <item>@string/price_mid_label</item>
+    </string-array>
+
+    <string-array name="settings_price_values">
+        <item>@string/price_any_value</item>
+        <item>@string/price_min_value</item>
+        <item>@string/price_mid_value</item>
+    </string-array>
+
+</resources>

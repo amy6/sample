@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.text.DecimalFormat;
 import java.util.List;
 

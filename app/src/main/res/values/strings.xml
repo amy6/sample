@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">AutoZang</string>
+
+    <string name="settings_price_label">Price Range</string>
+    <string name="settings_price_key">price</string>
+    <string name="settings_price_default">@string/price_any_value</string>
+
+    <string name="price_any_value">-1</string>
+    <string name="price_min_value">500</string>
+    <string name="price_mid_value">1000</string>
+
+    <string name="price_any_label">Any price</string>
+    <string name="price_min_label">Less than Rs. 500</string>
+    <string name="price_mid_label">Rs. 500 - Rs. 1000</string>
 </resources>

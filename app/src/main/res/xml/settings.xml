@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="Price range"
+        android:entries="@array/settings_price_labels"
+        android:entryValues="@array/settings_price_values"
+        android:defaultValue="@string/settings_price_default"
+        android:summary="%s"/>
+
+</PreferenceScreen>

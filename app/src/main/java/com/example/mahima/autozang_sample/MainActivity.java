@@ -1,5 +1,6 @@
 package com.example.mahima.autozang_sample;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.action_filter:
                 //handle filters
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
         return  true;
