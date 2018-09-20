@@ -1,10 +1,19 @@
 package com.example.mahima.autozang_sample;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,10 +26,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Service> serviceList;
     private CustomRecyclerViewAdapter adapter;
 
+    private LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         serviceList = new ArrayList<>();
         setUpDummyData();
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         callButton.setOnClickListener(this);
         detectLocation.setOnClickListener(this);
@@ -79,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
-        return  true;
+        return true;
     }
 
     @Override
@@ -90,7 +106,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.location_icon:
                 //handle auto detect location
+                if (locationManager != null) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        Log.d(MainActivity.class.getSimpleName(), "No Permissions");
+                        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                        return;
+                    } else {
+                        List<String> providers = locationManager.getProviders(true);
+                        Location location = null;
+                        for (String provider : providers) {
+                            Location l = locationManager.getLastKnownLocation(provider);
+                            if (l == null) {
+                                continue;
+                            }
+                            if (location == null || l.getAccuracy() < location.getAccuracy()) {
+                                location = l;
+                            }
+                        }
+                        if (location != null) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            Log.d(MainActivity.class.getSimpleName(), "Lat : " + latitude + "\tLong: " + longitude);
+                            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                            try {
+                                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                String cityName = addresses.get(0).getAddressLine(0);
+                                locationEditText.setText(cityName != null ? cityName : "");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+
+                }
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d(MainActivity.class.getSimpleName(), "Requesting Permissions");
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Please enable GPS to autodetect location", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
