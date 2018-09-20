@@ -1,7 +1,6 @@
 package com.example.mahima.autozang_sample;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -9,13 +8,12 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.preference.ListPreference;
+import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    private ArrayList<Service> serviceList;
+    private ArrayList<ServiceModel> serviceModelList;
     private CustomRecyclerViewAdapter adapter;
 
     private LocationManager locationManager;
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left);
         }
 
-        serviceList = new ArrayList<>();
+        serviceModelList = new ArrayList<>();
         setUpDummyData();
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapter = new CustomRecyclerViewAdapter(this, serviceList);
+        adapter = new CustomRecyclerViewAdapter(this, serviceModelList);
         recyclerView.setAdapter(adapter);
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
@@ -103,13 +101,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.call_button:
                 //intent to call
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + "9234241931"));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
                 break;
             case R.id.location_icon:
                 //handle auto detect location
                 if (locationManager != null) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        Log.d(MainActivity.class.getSimpleName(), "No Permissions");
                         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                         return;
                     } else {
@@ -127,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (location != null) {
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
-                            Log.d(MainActivity.class.getSimpleName(), "Lat : " + latitude + "\tLong: " + longitude);
                             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                             try {
                                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
@@ -147,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(MainActivity.class.getSimpleName(), "Requesting Permissions");
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0
@@ -162,28 +162,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setUpDummyData () {
 
         String imgUrl = "https://assets.vccircle.com/uploads/2017/09/car-1751750_1280.jpg";
-        String name = "RajLakshmi Service Center";
+        String name = "RajLakshmi ServiceModel Center";
         String location = "Tambaram, Chennai";
         String distance = "2.5km away";
         float rating = 4.3f;
         int reviewCount = 64;
         String days = "Monday to Saturday";
         String timings = "9am to 9pm";
-        String chargeType = "Basic Standard Service Charge";
+        String chargeType = "Basic Standard ServiceModel Charge";
         double price = 200;
         String serviceType = "Pick and Drop Available";
 
         for (int i = 0; i < 10; i++) {
-            Service service = new Service(imgUrl, name, location, distance, rating, reviewCount, days, timings, chargeType, price * (i + 1), serviceType);
-            serviceList.add(service);
+            ServiceModel serviceModel = new ServiceModel(imgUrl, name, location, distance, rating, reviewCount, days, timings, chargeType, price * (i + 1), serviceType);
+            serviceModelList.add(serviceModel);
         }
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         String price = sharedPreferences.getString(s, "-1");
-        if (serviceList != null) {
-            serviceList.clear();
+        if (serviceModelList != null) {
+            serviceModelList.clear();
             adapter.notifyDataSetChanged();
         }
 
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case 500:
                 setUpDummyData();
-                Iterator<Service> iterator = serviceList.iterator();
+                Iterator<ServiceModel> iterator = serviceModelList.iterator();
                 while (iterator.hasNext()) {
                     if (iterator.next().getPrice() > 500) {
                         iterator.remove();
@@ -204,13 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 1000:
                 setUpDummyData();
-                iterator = serviceList.iterator();
+                iterator = serviceModelList.iterator();
                 while (iterator.hasNext()) {
                     if (iterator.next().getPrice() <= 500) {
                         iterator.remove();
                     }
                 }
-                iterator = serviceList.iterator();
+                iterator = serviceModelList.iterator();
                 while (iterator.hasNext()) {
                     if (iterator.next().getPrice() > 1000) {
                         iterator.remove();

@@ -15,8 +15,8 @@
         android:background="@drawable/border"
         android:ems="10"
         android:hint="ex: Tambaram, Chennai"
-        android:padding="8dp"
         android:inputType="textPersonName"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="@+id/location_label"
         app:layout_constraintTop_toBottomOf="@+id/location_label" />
 
@@ -43,10 +43,10 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:src="@drawable/ic_my_location"
         app:layout_constraintBottom_toBottomOf="@+id/location"
         app:layout_constraintStart_toEndOf="@+id/location"
-        app:layout_constraintTop_toTopOf="@+id/location"
-        android:src="@drawable/ic_my_location" />
+        app:layout_constraintTop_toTopOf="@+id/location" />
 
     <TextView
         android:id="@+id/autodetect_label"
@@ -69,13 +69,13 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
+        android:background="@color/buttonColor"
         android:drawableLeft="@drawable/ic_call"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_call"
-        android:text="Call Us"
-        android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:background="@color/buttonColor"
+        android:paddingStart="16dp"
+        android:text="Call Us"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/location"

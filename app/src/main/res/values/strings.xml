@@ -12,4 +12,5 @@
     <string name="price_any_label">Any price</string>
     <string name="price_min_label">Less than Rs. 500</string>
     <string name="price_mid_label">Rs. 500 - Rs. 1000</string>
+    <string name="rupee_symbol">Rs.</string>
 </resources>

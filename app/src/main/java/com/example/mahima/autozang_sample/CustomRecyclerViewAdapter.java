@@ -21,11 +21,11 @@ import butterknife.ButterKnife;
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.CustomViewHolder> {
 
     private Context context;
-    private List<Service> serviceList;
+    private List<ServiceModel> serviceModelList;
 
-    public CustomRecyclerViewAdapter(Context context, List<Service> serviceList) {
+    CustomRecyclerViewAdapter(Context context, List<ServiceModel> serviceModelList) {
         this.context = context;
-        this.serviceList = serviceList;
+        this.serviceModelList = serviceModelList;
     }
 
     @NonNull
@@ -36,22 +36,22 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        Service service = serviceList.get(position);
-        Log.d(CustomRecyclerViewAdapter.class.getSimpleName(), "Image URL: " + service.getImageUrl());
-//        Picasso.get().load(service.getImageUrl()).into(holder.imageView);
-        holder.name.setText(service.getName());
-        holder.location.setText(service.getLocation());
-        holder.distance.setText(service.getDistance());
-        holder.ratingBar.setRating(service.getRating());
-        holder.reviewCount.setText(String.valueOf(service.getReviewCount()).concat(" reviews"));
-        holder.days.setText(service.getDays().concat(", ").concat(service.getTimings()));
-        holder.chargeType.setText(service.getChargeType());
-        holder.price.setText("Rs. ".concat(new DecimalFormat("#.0#").format(service.getPrice())).concat(" /-"));
-        holder.serviceType.setText(service.getServiceType());
+        ServiceModel serviceModel = serviceModelList.get(position);
+        Log.d(CustomRecyclerViewAdapter.class.getSimpleName(), "Image URL: " + serviceModel.getImageUrl());
+//        Picasso.get().load(serviceModel.getImageUrl()).into(holder.imageView);
+        holder.name.setText(serviceModel.getName());
+        holder.location.setText(serviceModel.getLocation());
+        holder.distance.setText(serviceModel.getDistance());
+        holder.ratingBar.setRating(serviceModel.getRating());
+        holder.reviewCount.setText(String.valueOf(serviceModel.getReviewCount()).concat(" reviews"));
+        holder.days.setText(serviceModel.getDays().concat(", ").concat(serviceModel.getTimings()));
+        holder.chargeType.setText(serviceModel.getChargeType());
+        holder.price.setText(context.getString(R.string.rupee_symbol).concat(new DecimalFormat("#.0#").format(serviceModel.getPrice())).concat(" /-"));
+        holder.serviceType.setText(serviceModel.getServiceType());
         holder.bookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //handle service booking
+                //handle serviceModel booking
             }
         });
 
@@ -59,7 +59,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
     @Override
     public int getItemCount() {
-        return serviceList != null ? serviceList.size() : 0;
+        return serviceModelList != null ? serviceModelList.size() : 0;
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -87,7 +87,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         @BindView(R.id.book_button)
         Button bookButton;
 
-        public CustomViewHolder(View itemView) {
+        CustomViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

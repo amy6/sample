@@ -1,6 +1,6 @@
 package com.example.mahima.autozang_sample;
 
-public class Service {
+public class ServiceModel {
 
     private String imageUrl;
     private String name;
@@ -14,7 +14,7 @@ public class Service {
     private double price;
     private String serviceType;
 
-    public Service(String imageUrl, String name, String location, String distance, float rating, int reviewCount, String days, String timings, String chargeType, double price, String serviceType) {
+    ServiceModel(String imageUrl, String name, String location, String distance, float rating, int reviewCount, String days, String timings, String chargeType, double price, String serviceType) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.location = location;
