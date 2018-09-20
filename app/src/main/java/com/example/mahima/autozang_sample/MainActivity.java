@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                         return;
                     } else {
+                        Toast.makeText(this, "Fetching location", Toast.LENGTH_SHORT).show();
                         List<String> providers = locationManager.getProviders(true);
                         Location location = null;
                         for (String provider : providers) {
